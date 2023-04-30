@@ -1,3 +1,4 @@
+#@creador Andrei 
 # importate instalar el componente pip install python-barcode y para que los ponga en png  pip install pillow
 import os  #para limpiar pantalla
 from PIL import Image # cudrar imagen de el cb 
