@@ -4,6 +4,7 @@ import os  #para limpiar pantalla
 from PIL import Image # cudrar imagen de el cb 
 import time # tiempo en pantalla
 import barcode  # se importa la bibloteca
+import math
 # de la biblioteca barcode traemos el componente para generar imagenes
 from barcode.writer import ImageWriter
 
@@ -33,14 +34,21 @@ def generarCodigo():  # funcion generar codigo
         nuevo_codigo_imagen.paste(logo, (posicion_x, posicion_y), logo)# pegamos la imagen en el logo final
         nuevo_codigo_imagen.save(f"{nombreC}/{nombreC}_{i}.png") # lo guarda denuevo con el logo colocado sobrescribiendolo
        
-    imagenes = [Image.open(f"{nombreC}/{nombreC}_{i}.png") for i in range(cantidadCodigos)] # Cargar las imágenes generadas
-    ancho, alto = imagenes[0].size # Obtener el ancho y alto de una de las imágenes
-    imagen_final = Image.new("RGB", (ancho * cantidadCodigos, alto)) # Crear una nueva imagen con el tamaño suficiente para todas las imágenes generadas
-    posicion_x = 0 # Posición inicial para la primera imagen
+    imagenes = [Image.open(f"{nombreC}/{nombreC}_{i}.png") for i in range(cantidadCodigos)]
+    ancho, alto = imagenes[0].size
+    filas = math.ceil(cantidadCodigos/3) # Calcular el número de filas necesarias para acomodar todas las imágenes
+    imagen_final = Image.new("RGB", (ancho * 3, alto * filas), (255, 255, 255)) # Tamaño inicial de la imagen final
+    posicion_x = 0
+    posicion_y = 0
+    contador_imagenes = 0 # Inicializar el contador de imágenes
     for imagen in imagenes:
-        imagen_final.paste(imagen, (posicion_x, 0)) # Pegar cada imagen en la imagen final
-        posicion_x += ancho # Actualizar la posición horizontal para la siguiente imagen
-    imagen_final.save(f"{nombreC}/{nombreC}_final.png") # Guardar la imagen final
+        imagen_final.paste(imagen, (posicion_x, posicion_y))
+        posicion_x += ancho
+        contador_imagenes += 1
+        if contador_imagenes % 3 == 0: # Si se han pegado tres imágenes, empezar una nueva fila
+            posicion_x = 0
+            posicion_y += alto
+    imagen_final.save(f"{nombreC}/{nombreC}_final.png")
 
     for i in range(cantidadCodigos):
         os.remove(f"{nombreC}/{nombreC}_{i}.png")
