@@ -37,21 +37,21 @@ def generarCodigo():  # funcion generar codigo
     imagenes = [Image.open(f"{nombreC}/{nombreC}_{i}.png") for i in range(cantidadCodigos)]
     ancho, alto = imagenes[0].size
     filas = math.ceil(cantidadCodigos/3) # Calcular el número de filas necesarias para acomodar todas las imágenes
-    imagen_final = Image.new("RGB", (ancho * 3, alto * filas), (255, 255, 255)) # Tamaño inicial de la imagen final
-    posicion_x = 0
-    posicion_y = 0
+    imagen_final = Image.new("RGB", (ancho * 3, alto * filas), (255, 255, 255)) # Tamaño inicial de la imagen final FONDO BALNCO
+    posicion_x = 0 #pocicion inicial en X
+    posicion_y = 0 #pocicion inicial en y 
     contador_imagenes = 0 # Inicializar el contador de imágenes
     for imagen in imagenes:
-        imagen_final.paste(imagen, (posicion_x, posicion_y))
-        posicion_x += ancho
-        contador_imagenes += 1
+        imagen_final.paste(imagen, (posicion_x, posicion_y))# pegamos la imagen en el logo final
+        posicion_x += ancho # aumentO el valor de la variable "posicion_x" por el ancho de la imagen actual.
+        contador_imagenes += 1 #contador aumenta cada que hace 3 lineas
         if contador_imagenes % 3 == 0: # Si se han pegado tres imágenes, empezar una nueva fila
-            posicion_x = 0
-            posicion_y += alto
-    imagen_final.save(f"{nombreC}/{nombreC}_final.png")
+            posicion_x = 0 # se comieza en la pocicion 0 en x otra vez
+            posicion_y += alto+15 #segun el ato de la imagen se acomoda nuevamnete + 15 px de mas para que no queden muy pegadas
+    imagen_final.save(f"{nombreC}/{nombreC}_final.png") # se guarda la imagen final , con todos los codigos 
 
-    for i in range(cantidadCodigos):
-        os.remove(f"{nombreC}/{nombreC}_{i}.png")
+    for i in range(cantidadCodigos): 
+        os.remove(f"{nombreC}/{nombreC}_{i}.png") # eliminamos todas las imagenes que nos sean iguales a la final
 
     os.system("cls") #limpiamos pantalla
     print("codigos generados correctamente") # mensaje al usuario
