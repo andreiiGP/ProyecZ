@@ -42,8 +42,8 @@ def generarCodigo():  # funcion generar codigo
         posicion_x += ancho # Actualizar la posición horizontal para la siguiente imagen
     imagen_final.save(f"{nombreC}/{nombreC}_final.png") # Guardar la imagen final
 
-    os.remove(imagenes)
-   
+    for i in range(cantidadCodigos):
+        os.remove(f"{nombreC}/{nombreC}_{i}.png")
 
     os.system("cls") #limpiamos pantalla
     print("codigos generados correctamente") # mensaje al usuario
