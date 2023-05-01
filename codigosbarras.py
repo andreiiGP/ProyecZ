@@ -78,5 +78,4 @@ def GenerarCB():  # funcion usuario
             print("ingrese una opcion correcta")
             time.sleep(1) 
             os.system("cls")
-            
 GenerarCB()
