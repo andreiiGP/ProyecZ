@@ -19,10 +19,10 @@ def generarCodigo():  # funcion generar codigo
         caracter = (input(f"Ingrese Los caracteres para crear su codigo : "))
         formato_barcode = barcode.get_barcode_class('code128') #formato del codigo se puede cambiar a ean13 o X formato
         codigo = formato_barcode(caracter, writer=ImageWriter()) #Genera el cb 
-        codigo.save(f"{nombreC}/{nombreC} {i}") # guarda el cb
+        codigo.save(f"{nombreC}/{nombreC}_{i}") # guarda el cb
 
         logo = Image.open("logo/logosentryo.png")# abre el cb
-        codigo_imagen = Image.open(f"{nombreC}/{nombreC} {i}.png")#copia el cb ya guarado lo abre
+        codigo_imagen = Image.open(f"{nombreC}/{nombreC}_{i}.png")#copia el cb ya guarado lo abre
         nuevo_codigo_imagen = Image.new("RGB", (int(codigo_imagen.size[0]*1), int(codigo_imagen.size[1]*1.2)), (255, 255, 255))#lo pega redimencionado 
         nuevo_codigo_imagen.paste(codigo_imagen, (0, 70))# valores para colocar el cb
 
@@ -31,7 +31,20 @@ def generarCodigo():  # funcion generar codigo
         posicion_x = int((ancho_codigo - ancho_logo) / 2)#  calculamos la posición horizontal en la que se debe pegar el logo en la imagen final
         posicion_y = 5 # establecemos la posición vertical en la que se debe pegar el logo 
         nuevo_codigo_imagen.paste(logo, (posicion_x, posicion_y), logo)# pegamos la imagen en el logo final
-        nuevo_codigo_imagen.save(f"{nombreC}/{nombreC} {i}.png") # lo guarda denuevo con el logo colocado sobrescribiendolo
+        nuevo_codigo_imagen.save(f"{nombreC}/{nombreC}_{i}.png") # lo guarda denuevo con el logo colocado sobrescribiendolo
+       
+    imagenes = [Image.open(f"{nombreC}/{nombreC}_{i}.png") for i in range(cantidadCodigos)] # Cargar las imágenes generadas
+    ancho, alto = imagenes[0].size # Obtener el ancho y alto de una de las imágenes
+    imagen_final = Image.new("RGB", (ancho * cantidadCodigos, alto)) # Crear una nueva imagen con el tamaño suficiente para todas las imágenes generadas
+    posicion_x = 0 # Posición inicial para la primera imagen
+    for imagen in imagenes:
+        imagen_final.paste(imagen, (posicion_x, 0)) # Pegar cada imagen en la imagen final
+        posicion_x += ancho # Actualizar la posición horizontal para la siguiente imagen
+    imagen_final.save(f"{nombreC}/{nombreC}_final.png") # Guardar la imagen final
+
+    os.remove(imagenes)
+   
+
     os.system("cls") #limpiamos pantalla
     print("codigos generados correctamente") # mensaje al usuario
     time.sleep(1)# esperamos 1 segundo 
