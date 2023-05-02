@@ -34,6 +34,14 @@ def generarCodigo():  # funcion generar codigo
         nuevo_codigo_imagen.paste(logo, (posicion_x, posicion_y), logo)# pegamos la imagen en el logo final
         nuevo_codigo_imagen.save(f"{nombreC}/{nombreC}_{i}.png") # lo guarda denuevo con el logo colocado sobrescribiendolo
        
+    CrearIMG(nombreC,cantidadCodigos)
+    os.system("cls") #limpiamos pantalla
+    print("codigos generados correctamente") # mensaje al usuario
+    time.sleep(1)# esperamos 1 segundo 
+    os.system("cls") # limpiamos pantalla 
+    GenerarCB()# redirigimoa l menu principal
+
+def CrearIMG(nombreC,cantidadCodigos):
     imagenes = [Image.open(f"{nombreC}/{nombreC}_{i}.png") for i in range(cantidadCodigos)]
     ancho, alto = imagenes[0].size
     filas = math.ceil(cantidadCodigos/3) # Calcular el número de filas necesarias para acomodar todas las imágenes
@@ -52,12 +60,6 @@ def generarCodigo():  # funcion generar codigo
 
     for i in range(cantidadCodigos): 
         os.remove(f"{nombreC}/{nombreC}_{i}.png") # eliminamos todas las imagenes que nos sean iguales a la final
-
-    os.system("cls") #limpiamos pantalla
-    print("codigos generados correctamente") # mensaje al usuario
-    time.sleep(1)# esperamos 1 segundo 
-    os.system("cls") # limpiamos pantalla 
-    GenerarCB()# redirigimoa l menu principal
 
 def GenerarCB():  # funcion usuario
     while True:
